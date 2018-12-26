@@ -14,3 +14,10 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+// greeting_doubler = function(phrase) {
+//   alert(phrase + " " + phrase);
+// };
+
+// greeting_doubler('hello, world!');
+
