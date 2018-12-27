@@ -17,4 +17,4 @@ The base app doesn't use Action Cable, but rather is designed as the starting po
 git checkout action-cable-reference
 ```
 
-When following the tutorial, you should be able to resolve any discrepancies by comparing with this reference app.
+When following the  tutorial, you should be able to resolve any discrepancies by comparing with this reference app..
