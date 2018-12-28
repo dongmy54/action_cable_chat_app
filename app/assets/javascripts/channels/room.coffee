@@ -1,4 +1,7 @@
+# 此文件要求 对齐哈
+# 这里出现语法错误 浏览器端仍可看到
 App.room = App.cable.subscriptions.create "RoomChannel",
+  # 这里的方法也是 回调
   connected: ->
     # Called when the subscription is ready for use on the server
 
@@ -8,10 +11,9 @@ App.room = App.cable.subscriptions.create "RoomChannel",
   received: (data) ->
     # Called when there's incoming data on the websocket for this channel
     # data 是 broadcast hash
-    unless data.content.blank?
-      $('#messages-table').append '<div class="message">' +
-        '<div class="message-user">' + data.username + ":" + '</div>' +
-        '<div class="message-content">' + data.content + '</div>' + '</div>'
+    unless data.message.blank?
+      $('#messages-table').append data.message
+      scroll_bottom()
 
 
 # 在这里不光可以放 cable 的代码 还可以放置其它js 代码
@@ -27,3 +29,7 @@ submit_message = () ->
 
 $(document).on 'turbolinks:load', ->
   submit_message()
+
+scroll_bottom = () ->
+  scroll_height = $("#messages")[0].scrollHeight
+  $("#messages").scrollTop(scroll_height)
