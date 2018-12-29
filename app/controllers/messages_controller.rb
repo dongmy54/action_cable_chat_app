@@ -8,11 +8,15 @@ class MessagesController < ApplicationController
   def create
     message = current_user.messages.build(message_params)
     if message.save
-      # 广播失败自动忽略
+      #广播失败自动忽略
+
       ActionCable.server.broadcast 'room_channel',
                                     message: render_message(message)
-                                    # content: message.content,
-                                    # username: message.user.username
+                                    
+      message.mentions.each do |user|
+        ActionCable.server.broadcast "room_channel_user_#{user.id}",
+                                      mention: true
+      end
 
     end
   end

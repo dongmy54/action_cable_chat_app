@@ -1,5 +1,5 @@
 # 此文件要求 对齐哈
-# 这里出现语法错误 浏览器端仍可看到
+# 这里出现语法错误 浏览器端仍可看到 这里不用重启
 App.room = App.cable.subscriptions.create "RoomChannel",
   # 这里的方法也是 回调
   connected: ->
@@ -9,9 +9,8 @@ App.room = App.cable.subscriptions.create "RoomChannel",
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    # Called when there's incoming data on the websocket for this channel
-    # data 是 broadcast hash
-    unless data.message.blank?
+    alert("You have a new mention") if data['mention']    # data.['xx'] 写法也可以
+    if (data.message && !data.message.blank?)
       $('#messages-table').append data.message
       scroll_bottom()
 
@@ -20,7 +19,7 @@ App.room = App.cable.subscriptions.create "RoomChannel",
 # event 这里是 事件发生的对象
 submit_message = () ->
   $('#message_content').on 'keydown', (event) ->
-    if event.keyCode is 13
+    if event.keyCode is 13 && !event.shiftKey    # 按下enter 但 没有按shift
       # event.target.value 层叠结构哈
       console.log(event)
       $('input').click()
