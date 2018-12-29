@@ -1,12 +1,14 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    include SessionsHelper     # 可用 current_user 方法
+    # 不能在 订阅中直接使用 current_user
+    include SessionsHelper
 
     # identified_by action_cable 内置方法（属性访问器）
     identified_by :message_user
 
     def connect
       self.message_user = find_verified_user
+      # 订阅中 可直接用 message_user
     end
 
     private

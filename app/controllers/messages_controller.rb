@@ -8,11 +8,15 @@ class MessagesController < ApplicationController
   def create
     message = current_user.messages.build(message_params)
     if message.save
-      #广播失败自动忽略
+      #PS: 1、广播失败自动忽略(比如：没有频道),返回nil
+      #    2、rails c 中不可广播（都没有log)
 
-      ActionCable.server.broadcast 'room_channel',
+      # broadcast 方式一
+      ActionCable.server.broadcast 'rom_channel',
                                     message: render_message(message)
-                                    
+      # broadcast 方式二（strem_for)
+      RoomChannel.broadcast_to(User.last, object_message: true)
+
       message.mentions.each do |user|
         ActionCable.server.broadcast "room_channel_user_#{user.id}",
                                       mention: true
